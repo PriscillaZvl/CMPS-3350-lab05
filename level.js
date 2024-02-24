@@ -15,21 +15,37 @@ var obstacleSpeed = 2;
 function createObstacle() {
     console.log("Creating obstacle!");
 
+    // Assign the obstacle's position to right side of the screen
     var obstaclePosition = canvas.width;
-    obstacles.push(obstaclePosition);
+
+    // 30% chance for obstacle to be a wall
+    var isWall = Math.random() < 0.3;
+
+    // Create the obstacle object, randomize it a bit
+    var obstacle = {
+        x: obstaclePosition,
+        y: isWall ? canvas.height - 3 * obstacleHeight : canvas.height - obstacleHeight,
+        isWall: isWall,
+        width: obstacleWidth + (Math.random() * 50 - 25),
+        height: obstacleHeight + (Math.random() * 100 - 50)
+    };
+
+    // Spawn the obstacle
+    obstacles.push(obstacle);
 }
 
 // Update and move obstacles
 function updateObstacles() {
     console.log("Updating obstacles!");
 
+    // Loop through each obstacle
     for (var i = 0; i < obstacles.length; i++) {
         // Move the obstacle to the left
-        obstacles[i] -= obstacleSpeed;
+        obstacles[i].x -= obstacleSpeed;
 
-        // Fill in the obstacle
+        // Fill color in the obstacle
         context.fillStyle = 'black';
-        context.fillRect(obstacles[i], canvas.height - obstacleHeight, obstacleWidth, obstacleHeight);
+        context.fillRect(obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height);
 
         // Remove if it's offscreen
         if (obstacles[i] < -obstacleWidth) {
@@ -39,12 +55,12 @@ function updateObstacles() {
     }
 
     // Increase obstacle speed overtime
-    obstacleSpeed += 0.002;
+    obstacleSpeed += 0.001;
 }
 
 // Obstacle spawn intervals
-var obstacleMinFrame = 75;
-var obstacleMaxFrame = 300;
+var obstacleMinFrame = 100;
+var obstacleMaxFrame = 250;
 
 // Randomize the obstacle spawn iterval by frame
 var framesUntilNextObstacle = Math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
