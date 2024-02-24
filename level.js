@@ -1,43 +1,64 @@
-function createFloor(game, x, y) {
-    // Rectangle segment for floor
-    var floor = game.add.rectangle(x, y, 100, 50, 0x000000);
+// Reference to canvas and context
+var canvas = document.getElementById('gameCanvas');
+var context = canvas.getContext('2d');
 
-    // Physics
-    game.physics.add.existing(floor, true);
-    return floor;
+// Obstacle properties
+var obstacles = [];
+var obstacleWidth = 50;
+var obstacleHeight = 100;
+var obstacleSpeed = 2;
+
+// Create obstacle
+function createObstacle() {
+    var obstaclePosition = canvas.width;
+    obstacles.push(obstaclePosition);
 }
 
-function createWall(game, x, y) {
-    // Rectangle segment for wall
-    var wall = game.add.rectangle(x, y, 50, 100, 0x000000);
+// Update and move obstacles
+function updateObstacles() {
+    for (var i = 0; i < obstacles.length; i++) {
+        // Move the obstacle to the left
+        obstacles[i] -= obstacleSpeed;
 
-    // Physics 
-    game.physics.add.existing(wall, true);
-    return wall;
-}
+        // Fill in the obstacle
+        context.fillStyle = 'black';
+        context.fillRect(obstacles[i], canvas.height - obstacleHeight, obstacleWidth, obstacleHeight);
 
-function generateSection() {
-    // Random generation
-    var rand = Math.random();
-    if (rand < 0.5) {
-        // 75% chance of generating a floor
-        if (rand < 0.75) {
-            createFloor();
-        } else {
-            createWall();
+        // Remove if it's offscreen
+        if (obstacles[i] < -obstacleWidth) {
+            obstacles.splice(i, 1);
+            i--;
         }
     }
+
+    // Increase obstacle speed overtime
+    obstacleSpeed += 0.001;
 }
 
-function updateLevel(playerX, nextX, nextSection, sectionWidth) {
-    // Check if player has moved far enough
-    if (playerX > nextSectionX) {
-        generateSection();
-        nextSectionX += sectionWidth;
+// Obstacle spawn intervals
+var obstacleMinFrame = 75;
+var obstacleMaxFrame = 300;
+
+// Randomize the obstacle spawn iterval by frame
+var framesUntilNextObstacle = math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
+
+function gameLoop() {
+    // Clear the canvas
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Update and draw obstacles
+    updateObstacles();
+
+    // Create a new obstacle 
+    if (frameCount >= framesUntilNextObstacle) {
+        createObstacle();
+
+        framesUntilNextObstacle = frameCount + math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
     }
 
-    return nextSectionX;
+    requestAnimationFrame(gameLoop);
 }
 
-// Export the functions
-export {generateSection, updateLevel}
+// Start
+var frameCount = 0;
+gameLoop();
