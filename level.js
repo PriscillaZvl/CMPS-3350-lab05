@@ -2,6 +2,9 @@
 var canvas = document.getElementById('Canvas');
 var context = canvas.getContext('2d');
 
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
 // Obstacle properties
 var obstacles = [];
 var obstacleWidth = 50;
@@ -10,12 +13,16 @@ var obstacleSpeed = 2;
 
 // Create obstacle
 function createObstacle() {
+    console.log("Creating obstacle!");
+
     var obstaclePosition = canvas.width;
     obstacles.push(obstaclePosition);
 }
 
 // Update and move obstacles
 function updateObstacles() {
+    console.log("Updating obstacles!");
+
     for (var i = 0; i < obstacles.length; i++) {
         // Move the obstacle to the left
         obstacles[i] -= obstacleSpeed;
@@ -32,7 +39,7 @@ function updateObstacles() {
     }
 
     // Increase obstacle speed overtime
-    obstacleSpeed += 0.001;
+    obstacleSpeed += 0.002;
 }
 
 // Obstacle spawn intervals
@@ -40,9 +47,12 @@ var obstacleMinFrame = 75;
 var obstacleMaxFrame = 300;
 
 // Randomize the obstacle spawn iterval by frame
-var framesUntilNextObstacle = math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
+var framesUntilNextObstacle = Math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
 
 function gameLoop() {
+    // Debugging
+    console.log('Game loop started!');
+
     // Clear the canvas
     context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -53,10 +63,16 @@ function gameLoop() {
     if (frameCount >= framesUntilNextObstacle) {
         createObstacle();
 
-        framesUntilNextObstacle = frameCount + math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
+        framesUntilNextObstacle = frameCount + Math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
     }
 
+    // Increment
+    frameCount++;
+
     requestAnimationFrame(gameLoop);
+
+    // Debugging
+    console.log('Game loop ended!');
 }
 
 // Start
