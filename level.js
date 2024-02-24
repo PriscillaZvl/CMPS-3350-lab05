@@ -1,5 +1,5 @@
 // Reference to canvas and context
-var canvas = document.getElementById('gameCanvas');
+var canvas = document.getElementById('Canvas');
 var context = canvas.getContext('2d');
 
 // Obstacle properties
