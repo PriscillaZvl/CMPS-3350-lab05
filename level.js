@@ -1,10 +1,3 @@
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-
-ctx.fillStyle = 'black';
-
-ctx.fillRect(50, 50, 100, 100);
-level.js
 function createFloor(game, x, y) {
     // Rectangle segment for floor
     var floor = game.add.rectangle(x, y, 100, 50, 0x000000);
