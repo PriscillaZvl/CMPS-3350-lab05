@@ -5,6 +5,9 @@ var context = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+document.removeEventListener("keyup",jump);
+document.addEventListener("keyup", jump);
+
 // Obstacle properties
 var obstacles = [];
 var obstacleWidth = 50;
@@ -72,7 +75,9 @@ function gameLoop() {
     // Clear the canvas
     context.clearRect(0, 0, canvas.width, canvas.height);
     
+    // Spawn Character
     spawnCharacter();
+    
     // Update and draw obstacles
     updateObstacles();
 
@@ -92,16 +97,45 @@ function gameLoop() {
     console.log('Game loop ended!');
 }
 
-function spawnCharacter() {
-    
-    //setting up attributes for character
-    var charHeight = 35;
-    var charWidth = 35;
-    var charX = 10;
-    var charY = canvas.height - charHeight;
+//setting up attributes for character
+var charHeight = 35;
+var charWidth = 35;
+var charX = 10;
+var charY = canvas.height - charHeight;
 
+function spawnCharacter() {    
     context.fillStyle = 'red';
     context.fillRect(charX, charY, charWidth, charHeight);
+}
+
+//Sets isJumping to false
+var isJumping = false;
+
+function jump(e) {
+    //checks if isJumping is set to true and if the key pressed was spacebar
+    if(e.code !== "Space" || isJumping) {
+        return;
+    }
+    
+    //if key pressed was a spacebar set isJumping and velocity
+    isJumping = true; 
+    var jumpVelocity = -15;
+    
+    //function to animate the character jumping
+    function jumpAnimation() {
+        
+        charY += jumpVelocity;
+        spawnCharacter();
+        jumpVelocity += 0.5;
+        
+        if (charY >= canvas.height - charHeight) {
+            charY = canvas.height - charHeight;
+            isJumping = false;
+            clearInterval(jumpInterval);    
+        }
+    }
+
+    var jumpInterval = setInterval(jumpAnimation, 15);
 }
 
 // Start
