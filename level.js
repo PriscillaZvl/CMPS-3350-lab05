@@ -71,7 +71,8 @@ function gameLoop() {
 
     // Clear the canvas
     context.clearRect(0, 0, canvas.width, canvas.height);
-
+    
+    spawnCharacter();
     // Update and draw obstacles
     updateObstacles();
 
@@ -89,6 +90,18 @@ function gameLoop() {
 
     // Debugging
     console.log('Game loop ended!');
+}
+
+function spawnCharacter() {
+    
+    //setting up attributes for character
+    var charHeight = 35;
+    var charWidth = 35;
+    var charX = 10;
+    var charY = canvas.height - charHeight;
+
+    context.fillStyle = 'red';
+    context.fillRect(charX, charY, charWidth, charHeight);
 }
 
 // Start
