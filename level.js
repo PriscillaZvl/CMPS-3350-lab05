@@ -37,6 +37,9 @@ function createObstacle() {
     obstacles.push(obstacle);
 }
 
+// flag for collisions
+var collision_detected = false;
+
 // Update and move obstacles
 function updateObstacles() {
     console.log("Updating obstacles!");
@@ -49,6 +52,11 @@ function updateObstacles() {
         // Fill color in the obstacle
         context.fillStyle = 'black';
         context.fillRect(obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height);
+
+        // sets collision flag if checkCollision function returns true
+        if(checkCollision(obstacles[i], charY)) {
+            collision_detected = true;
+        }
 
         // Remove if it's offscreen
         if (obstacles[i] < -obstacleWidth) {
@@ -70,31 +78,38 @@ var framesUntilNextObstacle = Math.random() * (obstacleMaxFrame - obstacleMinFra
 
 function gameLoop() {
     // Debugging
-    console.log('Game loop started!');
+    if(!collision_detected) {
+        console.log('Game loop started!');
 
-    // Clear the canvas
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Spawn Character
-    spawnCharacter();
-    
-    // Update and draw obstacles
-    updateObstacles();
+        // Clear the canvas
+        context.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Create a new obstacle 
-    if (frameCount >= framesUntilNextObstacle) {
-        createObstacle();
+        // Spawn Character
+        spawnCharacter();
 
-        framesUntilNextObstacle = frameCount + Math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
+        // Update and draw obstacles
+        updateObstacles();
+
+        // Create a new obstacle 
+        if (frameCount >= framesUntilNextObstacle) {
+            createObstacle();
+
+            framesUntilNextObstacle = frameCount + Math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
+        }
+
+        // Increment
+        frameCount++;
+
+        requestAnimationFrame(gameLoop);
+        // Debugging
+        console.log('Game loop ended!');
+
+    } else {
+        // game ends and canvas is cleared
+        document.removeEventListener("keyup",jump);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        console.log('Game Over!');
     }
-
-    // Increment
-    frameCount++;
-
-    requestAnimationFrame(gameLoop);
-
-    // Debugging
-    console.log('Game loop ended!');
 }
 
 //setting up attributes for character
@@ -103,31 +118,35 @@ var charWidth = 35;
 var charX = 10;
 var charY = canvas.height - charHeight;
 
+//generates character
 function spawnCharacter() {    
-    context.fillStyle = 'red';
-    context.fillRect(charX, charY, charWidth, charHeight);
+    if(!collision_detected) {
+        console.log('Spawning Character!');
+        context.fillStyle = 'red';
+        context.fillRect(charX, charY, charWidth, charHeight);
+    }
 }
 
 //Sets isJumping to false
 var isJumping = false;
 
 function jump(e) {
-    //checks if isJumping is set to true and if the key pressed was spacebar
-    if(e.code !== "Space" || isJumping) {
+    //checks if isJumping is set to true and if the key pressed was not spacebar
+    if(e.code !== "Space" || isJumping || collision_detected) {
         return;
     }
-    
+
     //if key pressed was a spacebar set isJumping and velocity
     isJumping = true; 
     var jumpVelocity = -15;
-    
+
     //function to animate the character jumping
     function jumpAnimation() {
-        
+
         charY += jumpVelocity;
         spawnCharacter();
         jumpVelocity += 0.5;
-        
+
         if (charY >= canvas.height - charHeight) {
             charY = canvas.height - charHeight;
             isJumping = false;
@@ -136,6 +155,16 @@ function jump(e) {
     }
 
     var jumpInterval = setInterval(jumpAnimation, 15);
+}
+
+//checks for collisions
+function checkCollision(obstacles, charY) {
+    return (
+        obstacles.x < charX + charWidth &&
+        obstacles.x + obstacles.width > charX &&
+        obstacles.y < charY + charHeight &&
+        obstacles.y + obstacles.height > charY
+    )
 }
 
 // Start
