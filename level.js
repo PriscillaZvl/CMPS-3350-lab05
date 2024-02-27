@@ -1,6 +1,7 @@
 // Reference to canvas and context
 var canvas = document.getElementById('Canvas');
 var context = canvas.getContext('2d');
+var score = document.getElementById('score');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -74,6 +75,17 @@ var obstacleMaxFrame = 150;
 // Randomize the obstacle spawn iterval by frame
 var framesUntilNextObstacle = Math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
 
+// Scoreboard
+var score = 0;
+
+// Score increment interval. 10 ms = 0.01 seconds
+setInterval(function() {
+    if(!collision_detected) {
+        score++;
+        document.getElementById('score').innerText = "Score: " + score;
+    }
+}, 10);
+
 function gameLoop() {
     // Debugging
     if(!collision_detected) {
@@ -104,6 +116,7 @@ function gameLoop() {
         // game ends and canvas is cleared
         document.removeEventListener("keyup",jump);
         context.clearRect(0, 0, canvas.width, canvas.height);
+        console.log('Score: ' + score);
         console.log('Game Over!');
     }
 }

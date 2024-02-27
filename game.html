@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Purgatory</title>
+        <title>Pixel Running Jumping Cramming Simulator</title>
         <style>
+            @font-face {
+                font-family: 'Kubasta';
+                src: url('fonts/Kubasta.ttf') format('truetype');
+            }
             body, html, canvas {
                 width: 100%;
                 height: 100%;
                 margin: 0;
                 padding: 0;
             }
+            #score {
+                position: absolute;
+                top: 25%;
+                left: 50%;
+                transform: translate(-50%, 0);
+                font-size: 100px;
+                color: 'black';
+                font-family: 'Kubasta';
+            }
         </style>
     </head>
     <body>
         <canvas id="Canvas"></canvas>
+        <div id="score"></div>
         <script src="level.js"></script>
     </body>
 </html>
