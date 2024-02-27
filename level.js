@@ -5,8 +5,8 @@ var context = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-document.removeEventListener("keyup",jump);
-document.addEventListener("keyup", jump);
+document.removeEventListener("keydown",jump);
+document.addEventListener("keydown", jump);
 
 // Obstacle properties
 var obstacles = [];
@@ -16,7 +16,6 @@ var obstacleSpeed = 2;
 
 // Create obstacle
 function createObstacle() {
-    console.log("Creating obstacle!");
 
     // Assign the obstacle's position to right side of the screen
     var obstaclePosition = canvas.width;
@@ -42,7 +41,6 @@ var collision_detected = false;
 
 // Update and move obstacles
 function updateObstacles() {
-    console.log("Updating obstacles!");
 
     // Loop through each obstacle
     for (var i = 0; i < obstacles.length; i++) {
@@ -66,12 +64,12 @@ function updateObstacles() {
     }
 
     // Increase obstacle speed overtime
-    obstacleSpeed += 0.001;
+    obstacleSpeed += 0.0005;
 }
 
 // Obstacle spawn intervals
-var obstacleMinFrame = 100;
-var obstacleMaxFrame = 250;
+var obstacleMinFrame = 125;
+var obstacleMaxFrame = 150;
 
 // Randomize the obstacle spawn iterval by frame
 var framesUntilNextObstacle = Math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
@@ -79,7 +77,6 @@ var framesUntilNextObstacle = Math.random() * (obstacleMaxFrame - obstacleMinFra
 function gameLoop() {
     // Debugging
     if(!collision_detected) {
-        console.log('Game loop started!');
 
         // Clear the canvas
         context.clearRect(0, 0, canvas.width, canvas.height);
@@ -102,7 +99,6 @@ function gameLoop() {
 
         requestAnimationFrame(gameLoop);
         // Debugging
-        console.log('Game loop ended!');
 
     } else {
         // game ends and canvas is cleared
