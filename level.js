@@ -42,7 +42,7 @@ function updateObstacles() {
     for (var i = 0; i < obstacles.length; i++) {
         // Move the obstacle to the left
         obstacles[i].x -= obstacleSpeed;
-
+ 
         // Fill color in the obstacle
         context.fillStyle = 'black';
         context.fillRect(obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height);
@@ -79,12 +79,14 @@ function gameLoop() {
     if (frameCount >= framesUntilNextObstacle) {
         createObstacle();
 
+        // Reset the frame count and randomize the next obstacle spawn interval
         framesUntilNextObstacle = frameCount + Math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
     }
 
     // Increment
     frameCount++;
 
+    // Loop
     requestAnimationFrame(gameLoop);
 
     // Debugging
