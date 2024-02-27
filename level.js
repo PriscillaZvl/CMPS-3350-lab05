@@ -118,7 +118,28 @@ function gameLoop() {
         context.clearRect(0, 0, canvas.width, canvas.height);
         console.log('Score: ' + score);
         console.log('Game Over!');
+
+        // Store score
+        storeScore(score);
+
+        displayTopScores();
     }
+}
+
+// Store scores
+function storeScore(score) {
+    // Obtain the current top scores
+    var topScores = JSON.parse(localStorage.getItem('topScores')) || [];
+
+    // Add the new score
+    topScores.push(score);
+
+    // Sort the scores
+    topScores.sort(function a, b) { return b - a; });
+    topScores = topScores.slice(0, 5);
+
+    // Store the scores
+    localStorage.setItem('topScores', JSON.stringify(topScores));
 }
 
 //setting up attributes for character
