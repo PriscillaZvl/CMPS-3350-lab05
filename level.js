@@ -70,7 +70,7 @@ function updateObstacles() {
 
 // Obstacle spawn intervals
 var obstacleMinFrame = 125;
-var obstacleMaxFrame = 150;
+var obstacleMaxFrame = 175;
 
 // Randomize the obstacle spawn iterval by frame
 var framesUntilNextObstacle = Math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
