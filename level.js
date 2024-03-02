@@ -8,6 +8,7 @@ canvas.height = window.innerHeight;
 
 document.removeEventListener("keydown",jump);
 document.addEventListener("keydown", jump);
+document.addEventListener("keydown", reset_game);
 
 // Obstacle properties
 var obstacles = [];
@@ -120,9 +121,8 @@ function gameLoop() {
         console.log('Game Over!');
 
         // Store score
-        storeScore(score);
-
-        displayTopScores();
+        //storeScore(score);
+        //displayTopScores();
     }
 }
 
@@ -180,6 +180,20 @@ function checkCollision(obstacles, charY) {
         obstacles.y < charY + charHeight &&
         obstacles.y + obstacles.height > charY
     )
+}
+
+function reset_game() {
+    if(collision_detected) {
+        obstacles = [];
+        obstacleSpeed = 2;
+        collision_detected = false;
+        score = 0;
+        charY = canvas.height - charHeight;
+        isJumping = false;
+        frameCount = 0;
+        framesUntilNextObstacle = Math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
+        gameLoop();
+    }
 }
 
 // Start
