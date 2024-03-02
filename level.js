@@ -117,6 +117,7 @@ function gameLoop() {
     } else {
         // game ends and canvas is cleared
         document.removeEventListener("keyup",jump);
+        document.removeEventListener("keydown", reset_game);
         context.clearRect(0, 0, canvas.width, canvas.height);
 
         // Add a 1 second delay before displaying Game OVer
@@ -127,8 +128,8 @@ function gameLoop() {
 
             setTimeout(function() {
                 document.addEventListener("keydown", reset_game);
-            }, 500);
-        }, 1000);
+            }, 1000);
+        }, 500);
 
     }
 }
@@ -148,18 +149,27 @@ function storeScore(score) {
     localStorage.setItem('scores', JSON.stringify(scores));
 }
 
+var timeouts = [];
+
 function displayTopScores() {
-    // Obtain scores
-    var scores = JSON.parse(localStorage.getItem('scores')) || [];
+    return new Promise((resolve) => {
+        // Obtain scores
+        var scores = JSON.parse(localStorage.getItem('scores')) || [];
 
-    // Clear the scores element
-    document.getElementById('scores').innerText = "";
+        // Clear the scores element
+        document.getElementById('scores').innerText = "";
 
-    // Display the scores one by one
-    scores.forEach(function(score, index) {
-        setTimeout(function() {
-            document.getElementById('scores').innerText += score + "\n";
-        }, index * 200);
+        // Display the scores one by one
+        scores.forEach(function(score, index) {
+            timeouts.push(setTimeout(function() {
+                document.getElementById('scores').innerText += score + "\n";
+
+                // Check if it's the last score
+                if (index === scores.length - 1) {
+                    resolve();
+                }
+            }, index * 200));
+        });
     });
 }
 
@@ -219,7 +229,12 @@ function checkCollision(obstacles, charY) {
 
 function reset_game(e) {
     if (collision_detected && e.code == "Space") {
+
+        // Remove the event listener for the reset_game function
         document.removeEventListener("keydown", reset_game);
+
+        // Clear all timeouts
+        timeouts.forEach(clearTimeout);
         obstacles = [];
         obstacleSpeed = 2;
         collision_detected = false;
@@ -231,6 +246,11 @@ function reset_game(e) {
         document.getElementById('gameOver').innerText = "";
         document.getElementById('scores').innerText = "";
         gameLoop();
+
+        // Add a 1 second delay before allowing the user to reset the game
+        setTimeout(function() {
+            document.addEventListener("keydown", reset_game);
+        }, 1000);
     }
 }
 
