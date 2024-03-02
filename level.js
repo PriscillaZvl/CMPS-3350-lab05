@@ -2,6 +2,7 @@
 var canvas = document.getElementById('Canvas');
 var context = canvas.getContext('2d');
 var score = document.getElementById('score');
+var gameOver = document.getElementById('gameOver');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -119,6 +120,7 @@ function gameLoop() {
         context.clearRect(0, 0, canvas.width, canvas.height);
         console.log('Score: ' + score);
         console.log('Game Over!');
+        document.getElementById('gameOver').innerText = "Game Over! Press any key to retry.";
 
         // Store score
         //storeScore(score);
@@ -192,6 +194,7 @@ function reset_game() {
         isJumping = false;
         frameCount = 0;
         framesUntilNextObstacle = Math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
+        document.getElementById('gameOver').innerText = "";
         gameLoop();
     }
 }
