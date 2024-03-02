@@ -122,7 +122,7 @@ function gameLoop() {
 
         // Add a 1 second delay before displaying Game OVer
         setTimeout(function() {
-            document.getElementById('gameOver').innerText = "Game Over! Press any key to retry.";
+            document.getElementById('gameOver').innerText = "Game Over! Press space to retry.";
             storeScore(score);
             displayTopScores();
 
@@ -156,8 +156,8 @@ function displayTopScores() {
         // Obtain scores
         var scores = JSON.parse(localStorage.getItem('scores')) || [];
 
-        // Clear the scores element
         document.getElementById('scores').innerText = "";
+        document.getElementById('topScores').innerText = "Top Scores";
 
         // Display the scores one by one
         scores.forEach(function(score, index) {
@@ -245,6 +245,7 @@ function reset_game(e) {
         framesUntilNextObstacle = Math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
         document.getElementById('gameOver').innerText = "";
         document.getElementById('scores').innerText = "";
+        document.getElementById('topScores').innerText = "";
         gameLoop();
 
         // Add a 1 second delay before allowing the user to reset the game

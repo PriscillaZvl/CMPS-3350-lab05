@@ -27,7 +27,7 @@
                 color: 'black';
                 font-family: 'Kubasta';
             }
-            #scores {
+            #scoresContainer {
                 position: absolute;
                 text-align: center;
                 top: 35%;
@@ -36,6 +36,15 @@
                 font-size: 60px;
                 color: 'black';
                 font-family: 'Kubasta';
+            }
+            #topScores {
+                font-size: 70px;
+                color: 'black';
+            }
+
+            #scores {
+                font-size: 60px;
+                color: 'black';
             }
             #gameOver {
                 position: absolute;
@@ -52,7 +61,10 @@
     <body>
         <canvas id="Canvas"></canvas>
         <div id="score"></div>
-        <div id="scores"></div>
+        <div id="scoresContainer">
+            <div id="topScores"></div>
+            <div id="scores"></div>
+        </div>
         <div id="gameOver"></div>
         <script src="level.js"></script>
     </body>
