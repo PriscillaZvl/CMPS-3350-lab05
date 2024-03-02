@@ -27,12 +27,22 @@
                 color: 'black';
                 font-family: 'Kubasta';
             }
-            #gameOver {
+            #scores {
                 position: absolute;
-                top: 50%;
+                text-align: center;
+                top: 35%;
                 left: 50%;
                 transform: translate(-50%, 0);
-                font-size: 25px;
+                font-size: 60px;
+                color: 'black';
+                font-family: 'Kubasta';
+            }
+            #gameOver {
+                position: absolute;
+                top: 10%;
+                left: 50%;
+                transform: translate(-50%, 0);
+                font-size: 75px;
                 color: 'black';
                 font-family: 'Kubasta';
                 animation: blink 1.5s linear infinite;
@@ -42,6 +52,7 @@
     <body>
         <canvas id="Canvas"></canvas>
         <div id="score"></div>
+        <div id="scores"></div>
         <div id="gameOver"></div>
         <script src="level.js"></script>
     </body>

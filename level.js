@@ -118,16 +118,50 @@ function gameLoop() {
         // game ends and canvas is cleared
         document.removeEventListener("keyup",jump);
         context.clearRect(0, 0, canvas.width, canvas.height);
-        console.log('Score: ' + score);
-        console.log('Game Over!');
-        document.getElementById('gameOver').innerText = "Game Over! Press any key to retry.";
 
-        // Store score
-        //storeScore(score);
-        //displayTopScores();
+        // Add a 1 second delay before displaying Game OVer
+        setTimeout(function() {
+            document.getElementById('gameOver').innerText = "Game Over! Press any key to retry.";
+            storeScore(score);
+            displayTopScores();
+
+            setTimeout(function() {
+                document.addEventListener("keydown", reset_game);
+            }, 500);
+        }, 1000);
+
     }
 }
 
+function storeScore(score) {
+    // Obtain scores from local storage or create an empty array
+    var scores = JSON.parse(localStorage.getItem('scores')) || [];
+
+    // Add the new score
+    scores.push(score);
+
+    // Sort the scores in descending order and keep the top 5
+    scores.sort(function(a, b) { return b - a; });
+    scores = scores.slice(0, 5);
+
+    // Store the scores back in localStorage
+    localStorage.setItem('scores', JSON.stringify(scores));
+}
+
+function displayTopScores() {
+    // Obtain scores
+    var scores = JSON.parse(localStorage.getItem('scores')) || [];
+
+    // Clear the scores element
+    document.getElementById('scores').innerText = "";
+
+    // Display the scores one by one
+    scores.forEach(function(score, index) {
+        setTimeout(function() {
+            document.getElementById('scores').innerText += score + "\n";
+        }, index * 200);
+    });
+}
 
 //setting up attributes for character
 var charHeight = 35;
@@ -138,7 +172,6 @@ var charY = canvas.height - charHeight;
 //generates character
 function spawnCharacter() {    
     if(!collision_detected) {
-        console.log('Spawning Character!');
         context.fillStyle = 'red';
         context.fillRect(charX, charY, charWidth, charHeight);
     }
@@ -184,8 +217,9 @@ function checkCollision(obstacles, charY) {
     )
 }
 
-function reset_game() {
-    if(collision_detected) {
+function reset_game(e) {
+    if (collision_detected && e.code == "Space") {
+        document.removeEventListener("keydown", reset_game);
         obstacles = [];
         obstacleSpeed = 2;
         collision_detected = false;
@@ -195,6 +229,7 @@ function reset_game() {
         frameCount = 0;
         framesUntilNextObstacle = Math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
         document.getElementById('gameOver').innerText = "";
+        document.getElementById('scores').innerText = "";
         gameLoop();
     }
 }
