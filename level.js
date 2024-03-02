@@ -169,7 +169,7 @@ function displayTopScores() {
                     resolve();
                 }
             }, index * 200));
-        });
+        }); 
     });
 }
 
@@ -180,7 +180,20 @@ var charX = 10;
 var charY = canvas.height - charHeight;
 
 //generates character
-function spawnCharacter() {    
+function spawnCharacter() {
+
+    var ctx = canvas.getContext('2d');
+    ctx.strokeStyle = 'black';
+
+    ctx.beginPath();
+
+    var floorY = canvas.height;
+
+    ctx.moveTo(0, floorY);
+
+    ctx.lineTo(canvas.width,floorY);
+    ctx.stroke();
+
     if(!collision_detected) {
         context.fillStyle = 'red';
         context.fillRect(charX, charY, charWidth, charHeight);
