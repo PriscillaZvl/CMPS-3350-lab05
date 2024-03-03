@@ -4,6 +4,7 @@ var context = canvas.getContext('2d');
 var score = document.getElementById('score');
 var gameOver = document.getElementById('gameOver');
 var jumpSound = document.getElementById('jumpSound');
+var collisionSound = document.getElementById('collisionSound');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -145,6 +146,9 @@ function gameLoop() {
         // Debugging
 
     } else {
+        // collision sound is played
+        collisionSound.currentTime = 0;
+        collisionSound.play();
         // game ends and canvas is cleared
         document.removeEventListener("keyup",jump);
         document.removeEventListener("keydown", reset_game);
