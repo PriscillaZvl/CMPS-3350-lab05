@@ -32,7 +32,8 @@ function createObstacle() {
         y: isWall ? canvas.height - 3 * obstacleHeight : canvas.height - obstacleHeight,
         isWall: isWall,
         width: obstacleWidth + (Math.random() * 50 - 25),
-        height: obstacleHeight + (Math.random() * 100 - 50)
+        height: obstacleHeight + (Math.random() * 100 - 50),
+        direction: Math.random() < 0.3 ? 'vertical' : 'horizontal'
     };
 
     // Spawn the obstacle
@@ -41,6 +42,8 @@ function createObstacle() {
 
 // flag for collisions
 var collision_detected = false;
+
+var maxObstacleSpeed = 10;
 
 // Update and move obstacles
 function updateObstacles() {
@@ -67,12 +70,20 @@ function updateObstacles() {
     }
 
     // Increase obstacle speed overtime
-    obstacleSpeed += 0.0005;
+    if (obstacleSpeed < maxObstacleSpeed) {
+        obstacleSpeed += 0.0005;
+
+        // Decrease frames as obstacleSpeed increases
+        obstacleMinFrame -= 0.001;
+        obstacleMaxFrame -= 0.01;
+    }
 }
 
 // Obstacle spawn intervals
-var obstacleMinFrame = 125;
-var obstacleMaxFrame = 175;
+var obstacleMinFrame = 175;
+var obstacleMaxFrame = 200;
+
+
 
 // Randomize the obstacle spawn iterval by frame
 var framesUntilNextObstacle = Math.random() * (obstacleMaxFrame - obstacleMinFrame) + obstacleMinFrame;
@@ -89,7 +100,25 @@ setInterval(function() {
 }, 10);
 
 function gameLoop() {
-    // Debugging
+
+    for (var i = 0; i < obstacles.length; i++) {
+        var obstacle = obstacles[i];
+    
+        if (obstacle.direction === 'horizontal') {
+            // Nothing
+        } else {
+            // 20% chance of making the obstacle move up and down
+            var verticalSpeed = Math.random() * 5 + 1;
+            obstacle.y += Math.sin(obstacle.x / 100) * verticalSpeed;
+        }
+    
+        if (obstacle.x < -obstacleWidth) {
+            obstacles.splice(i, 1);
+            i--;
+        }
+    }
+
+
     if(!collision_detected) {
 
         // Clear the canvas
