@@ -3,6 +3,7 @@ var canvas = document.getElementById('Canvas');
 var context = canvas.getContext('2d');
 var score = document.getElementById('score');
 var gameOver = document.getElementById('gameOver');
+var jumpSound = document.getElementById('jumpSound');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -238,6 +239,9 @@ function jump(e) {
         return;
     }
 
+    //jump sound will be played when the spacebar is pressed
+    jumpSound.currentTime = 0;
+    jumpSound.play();
     //if key pressed was a spacebar set isJumping and velocity
     isJumping = true; 
     var jumpVelocity = -15;
