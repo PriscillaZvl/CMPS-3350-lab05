@@ -289,6 +289,8 @@ function reset_game(e) {
         obstacleSpeed = 2;
         collision_detected = false;
         score = 0;
+        obstacleMinFrame = 175;
+        obstacleMaxFrame = 200;
         charY = canvas.height - charHeight;
         isJumping = false;
         frameCount = 0;
