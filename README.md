@@ -1,7 +1,7 @@
 # Pixel Running Jumping Cramming Simulator README
 Pixel Running Jumping Cramming Simulator is a platformer that uses a jump mechanic in order to navigate through obstacles that are procedurally generated. The game gets progressively difficult the longer you survive! The speed of the obstacles increases over time. Once you have collided with one of the obstacles the game will end and the top scores that are located locally on your machine will be displayed.
 
-We made use of JavaScript, HTML, CSS, and a shell script. JavaScript was used in the level.js file which includes functions that spawn the character and the obstacles, detect collisions, and reset the gameloop. 
+We made use of JavaScript, HTML, CSS, and a shell script. JavaScript was used in the level.js file which includes functions that spawn the character and the obstacles, detect collisions, implement sound effects, and reset the gameloop. HTML and CSS was used to structure the game.
 
 # Getting Started
 
